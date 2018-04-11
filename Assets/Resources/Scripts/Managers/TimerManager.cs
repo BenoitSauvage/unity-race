@@ -78,7 +78,9 @@ public class TimerManager {
     }
 }
 
-
+/// <summary>
+///  Timer decrement time and execute delegate at 0:00
+/// </summary>
 public class Timer {
     private float TimeLeft;
     private float FirstTime;
@@ -88,7 +90,14 @@ public class Timer {
 
     toCall handler;
 
-    public Timer(float timeToWait, toCall handler, bool isTempo) {
+
+    /// <summary>
+    /// Timer constructor
+    /// </summary>
+    /// <param name="timeToWait">Float based</param>
+    /// <param name="handler">Delegate who'se gonna be called at the end of the timer</param>
+    /// <param name="isTempo">If true, the timer will not onna be destroy at the end of time to wait, but will be relaunch (default : false)</param>
+    public Timer(float timeToWait, toCall handler, bool isTempo = false) {
         TimeLeft = timeToWait;
         FirstTime = timeToWait;
 
@@ -105,7 +114,12 @@ public class Timer {
         FirstTime = newTimeToWait;
     }
 
-
+    /// <summary>
+    /// !!!DANGER!!!
+    /// Must be call only by TimerManager
+    /// </summary>
+    /// <param name="timeSinceLastUpdate"></param>
+    /// <returns></returns>
     public bool Update(float timeSinceLastUpdate) {
         bool destroyMe = false;
 
@@ -119,4 +133,17 @@ public class Timer {
         }
         return destroyMe;
     }
+}
+
+/// <summary>
+/// Don't usem it, still in work
+/// </summary>
+public unsafe class Chronos {
+    float* timeToUpdate;
+
+    public Chronos(float* timeToUpdate) {
+        this.timeToUpdate = timeToUpdate;
+    }
+
+
 }
