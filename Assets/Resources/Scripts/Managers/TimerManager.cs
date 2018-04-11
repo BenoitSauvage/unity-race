@@ -138,11 +138,11 @@ public class Timer {
 /// <summary>
 /// Don't usem it, still in work
 /// </summary>
-public unsafe class Chronos {
-    float* timeToUpdate;
+public class Chronos {
+    float value;
 
-    public Chronos(float* timeToUpdate) {
-        this.timeToUpdate = timeToUpdate;
+    public Chronos(float timeToUpdate) {
+        this.value = timeToUpdate;
     }
 
 
