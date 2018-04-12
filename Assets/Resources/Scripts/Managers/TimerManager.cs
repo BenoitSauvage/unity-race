@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// First create a children of TimeUp
+/// Then - AddTimer(object, TimeUp)
+/// </summary>
 public class TimerManager {
 
     #region Singleton
@@ -9,7 +14,7 @@ public class TimerManager {
 
 
     private TimerManager() {
-        TimeBook = new Dictionary<object, List<Timer>>();
+        TimeBook = new Dictionary<object, List<TimeUp>>();
     }
 
     public static TimerManager Instance {
@@ -23,27 +28,52 @@ public class TimerManager {
 
     #endregion
 
-    private static Dictionary<object, List<Timer>> TimeBook;
+    private static Dictionary<object, List<TimeUp>> TimeBook;
 
-
-    public void AddTimer(object from, Timer timer) {
+    /// <summary>
+    /// Explicit
+    /// </summary>
+    /// <param name="from"> write just "this" here </param>
+    /// <param name="timer"></param>
+    public void AddTimer(object from, TimeUp timer) {
 
 
         if (TimeBook.ContainsKey(from)) {
             TimeBook[from].Add(timer);
         }
         else {
-            List<Timer> list = new List<Timer>();
+            List<TimeUp> list = new List<TimeUp>();
             list.Add(timer);
             TimeBook.Add(from, list);
         }
     }
 
-    public void Start() {
+    public Timer CreateSimpleTimer(float time, Timer.toCall handler) {
+        Timer newOne = new Timer(time, handler);
 
-        TimeBook = new Dictionary<object, List<Timer>>();
+
+        if (TimeBook.ContainsKey(this)) {
+            TimeBook[this].Add(newOne);
+        }
+        else {
+            List<TimeUp> list = new List<TimeUp>();
+            list.Add(newOne);
+            TimeBook.Add(this, list);
+        }
+
+        return newOne;
     }
 
+    /// <summary>
+    /// Have to be call one time in the flow parent
+    /// </summary>
+    public void Init() {
+        TimeBook = new Dictionary<object, List<TimeUp>>();
+    }
+
+    /// <summary>
+    /// Have to be call each update
+    /// </summary>
     public void Update() {
         float timeSinceLastUpdate = Time.deltaTime;
 
@@ -53,7 +83,7 @@ public class TimerManager {
 
             List<object> TimerListToRemove = new List<object>();
 
-            foreach (KeyValuePair<object, List<Timer>> pair in TimeBook) {
+            foreach (KeyValuePair<object, List<TimeUp>> pair in TimeBook) {
                 List<int> toRemove = new List<int>();
 
                 for (int i = 0; i < pair.Value.Count; i++) {
@@ -78,15 +108,21 @@ public class TimerManager {
     }
 }
 
+public abstract class TimeUp{
+    public abstract bool Update(float dt);
+}
+
 /// <summary>
 ///  Timer decrement time and execute delegate at 0:00
 /// </summary>
-public class Timer {
+public class Timer : TimeUp {
     private float TimeLeft;
     private float FirstTime;
 
     public delegate void toCall();
     private bool isTempo;
+
+    private bool toDestroy;
 
     toCall handler;
 
@@ -101,8 +137,10 @@ public class Timer {
         TimeLeft = timeToWait;
         FirstTime = timeToWait;
 
+        toDestroy = false;
         this.handler = handler;
         this.isTempo = isTempo;
+        
     }
 
     /// <summary>
@@ -114,36 +152,58 @@ public class Timer {
         FirstTime = newTimeToWait;
     }
 
+    public void Kill() {
+        toDestroy = false;
+    }
+
     /// <summary>
     /// !!!DANGER!!!
     /// Must be call only by TimerManager
     /// </summary>
-    /// <param name="timeSinceLastUpdate"></param>
-    /// <returns></returns>
-    public bool Update(float timeSinceLastUpdate) {
-        bool destroyMe = false;
+    /// <param name="deltaTime"></param>
+    /// <returns>if it return true Timer gonna be kill</returns>
+    public override bool Update(float deltaTime) {
+        if (!toDestroy) {
+            TimeLeft -= deltaTime;
+            if (TimeLeft <= 0) {
+                if (!isTempo) toDestroy = true;
 
-        TimeLeft -= timeSinceLastUpdate;
-
-        if (TimeLeft <= 0) {
-            if (!isTempo) destroyMe = true;
-
-            TimeLeft = FirstTime;
-            handler.Invoke();
+                TimeLeft = FirstTime;
+                handler.Invoke();
+            }
         }
-        return destroyMe;
+        return toDestroy;
     }
 }
 
 /// <summary>
-/// Don't usem it, still in work
+/// Use it to know how much time passed since launched
 /// </summary>
-public class Chronos {
-    float value;
+public class Chronos : TimeUp{
+    public float Value { get; private set; }
+    private bool destroyMe;
 
-    public Chronos(float timeToUpdate) {
-        this.value = timeToUpdate;
+    public Chronos() {
+        this.Value = 0f;
+        destroyMe = false;
     }
 
+    /// <summary>
+    /// !!!DANGER!!!
+    /// Must be call only by TimerManager
+    /// </summary>
+    /// <param name="deltaTime"></param>
+    /// <returns>if it return true Chronos gonna be kill</returns>
+    public override bool Update(float deltaTime) {
+        Value += deltaTime;
+        return destroyMe;
+    }
+
+   /// <summary>
+   /// Call it to kill Chronos
+   /// </summary>
+    public void Kill() {
+        destroyMe = true;
+    }
 
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+
 public class SceneManager {
 
 
@@ -24,11 +25,9 @@ public class SceneManager {
 
     public string CurrentScene { get; private set; }
 
-    public UnityAction<Scene, LoadSceneMode> OnLoad;
+    private UnityAction<Scene, LoadSceneMode> lastHandler = null;
 
-    private OnLoad lastHandler = null;
-
-    public void LoadScene(string sceneName, OnLoad handler = null) {
+    public void LoadScene(string sceneName, UnityAction<Scene, LoadSceneMode> handler = null) {
         if (lastHandler != null) UnityEngine.SceneManagement.SceneManager.sceneLoaded -= lastHandler;
         CurrentScene = sceneName;
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
