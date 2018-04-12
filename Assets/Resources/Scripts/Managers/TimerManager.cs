@@ -48,17 +48,26 @@ public class TimerManager {
         }
     }
 
-    public Timer CreateSimpleTimer(float time, Timer.toCall handler) {
+
+    /// <summary>
+    /// Best way is to init your timer in the start, then add it when you need it
+    /// But if you want creat and add in the same time, you can use it
+    /// </summary>
+    /// <param name="from"> Alwayse "this"</param>
+    /// <param name="time"> Explicit </param>
+    /// <param name="handler"> What you whant to call at the end of the timer</param>
+    /// <returns></returns>
+    public Timer CreateSimpleTimer(object from, float time, Timer.toCall handler) {
         Timer newOne = new Timer(time, handler);
 
 
-        if (TimeBook.ContainsKey(this)) {
-            TimeBook[this].Add(newOne);
+        if (TimeBook.ContainsKey(from)) {
+            TimeBook[from].Add(newOne);
         }
         else {
             List<TimeUp> list = new List<TimeUp>();
             list.Add(newOne);
-            TimeBook.Add(this, list);
+            TimeBook.Add(from, list);
         }
 
         return newOne;
