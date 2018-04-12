@@ -40,13 +40,8 @@ public class SceneManager {
     }
 
     public void LoadScene(string sceneName, InitToCall handler = null) {
-        if (handler == null) {
-            onSceneLoadedDelegate = null;
-        }
-        
         onSceneLoadedDelegate = handler;
         LoadScene(sceneName, DelegateCaller);
-        
     }
 
     private void DelegateCaller(Scene scene, LoadSceneMode load) {
