@@ -26,8 +26,10 @@ public class SceneManager {
     public string CurrentScene { get; private set; }
 
     private UnityAction<Scene, LoadSceneMode> lastHandler = null;
+    public delegate void InitToCall();
+    private InitToCall onSceneLoadedDelegate;
 
-    public void LoadScene(string sceneName, UnityAction<Scene, LoadSceneMode> handler = null) {
+    private void LoadScene(string sceneName, UnityAction<Scene, LoadSceneMode> handler = null) {
         if (lastHandler != null) UnityEngine.SceneManagement.SceneManager.sceneLoaded -= lastHandler;
         CurrentScene = sceneName;
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
@@ -36,5 +38,21 @@ public class SceneManager {
             UnityEngine.SceneManagement.SceneManager.sceneLoaded += handler;
         }
     }
+
+    public void LoadScene(string sceneName, InitToCall handler = null) {
+        if (handler == null) {
+            onSceneLoadedDelegate = null;
+        }
+        
+        onSceneLoadedDelegate = handler;
+        LoadScene(sceneName, DelegateCaller);
+        
+    }
+
+    private void DelegateCaller(Scene scene, LoadSceneMode load) {
+        onSceneLoadedDelegate.Invoke();
+    }
+
+    
 
 }
