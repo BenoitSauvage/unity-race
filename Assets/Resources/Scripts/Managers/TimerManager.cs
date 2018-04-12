@@ -56,7 +56,7 @@ public class TimerManager {
     /// <param name="from"> Alwayse "this"</param>
     /// <param name="time"> Explicit </param>
     /// <param name="handler"> What you whant to call at the end of the timer</param>
-    /// <returns></returns>
+    /// <returns>Timer just created</returns>
     public Timer CreateSimpleTimer(object from, float time, Timer.toCall handler) {
         Timer newOne = new Timer(time, handler);
 
@@ -74,6 +74,20 @@ public class TimerManager {
     }
 
     /// <summary>
+    /// Best way is to init your timer in the start, then add it when you need it
+    /// But if you want creat and add in the same time, you can use it
+    /// </summary>
+    /// <param name="from"> Alwayse "this"</param>
+    /// <returns>The Chronos just created</returns>
+    public Chronos CreateSimpleChronos(object from) {
+        Chronos newOne = new Chronos();
+
+        TimeBook[from].Add(newOne);
+
+        return newOne;
+    }
+
+    /// <summary>
     /// Have to be call one time in the flow parent
     /// </summary>
     public void Init() {
@@ -83,11 +97,7 @@ public class TimerManager {
     /// <summary>
     /// Have to be call each update
     /// </summary>
-    public void Update() {
-        float timeSinceLastUpdate = Time.deltaTime;
-
-
-
+    public void Update(float _dt) {
         if (TimeBook.Count != 0) {
 
             List<object> TimerListToRemove = new List<object>();
@@ -96,7 +106,7 @@ public class TimerManager {
                 List<int> toRemove = new List<int>();
 
                 for (int i = 0; i < pair.Value.Count; i++) {
-                    if (pair.Value[i].Update(timeSinceLastUpdate)) {
+                    if (pair.Value[i].Update(_dt)) {
                         toRemove.Add(i);
                     }
                 }
