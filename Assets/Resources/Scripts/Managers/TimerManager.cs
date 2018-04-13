@@ -142,6 +142,7 @@ public class Timer : TimeUp {
     private bool isTempo;
 
     private bool toDestroy;
+    public bool OnPause = false;
 
     toCall handler;
 
@@ -182,7 +183,7 @@ public class Timer : TimeUp {
     /// <param name="deltaTime"></param>
     /// <returns>if it return true Timer gonna be kill</returns>
     public override bool Update(float deltaTime) {
-        if (!toDestroy) {
+        if (!toDestroy && !OnPause) {
             TimeLeft -= deltaTime;
             if (TimeLeft <= 0) {
                 if (!isTempo) toDestroy = true;
@@ -201,6 +202,8 @@ public class Timer : TimeUp {
 public class Chronos : TimeUp{
     public float Value { get; private set; }
     private bool destroyMe;
+    public bool OnPause = false;
+
 
     public Chronos() {
         this.Value = 0f;
@@ -214,7 +217,8 @@ public class Chronos : TimeUp{
     /// <param name="deltaTime"></param>
     /// <returns>if it return true Chronos gonna be kill</returns>
     public override bool Update(float deltaTime) {
-        Value += deltaTime;
+        if (!OnPause) Value += deltaTime;
+
         return destroyMe;
     }
 
