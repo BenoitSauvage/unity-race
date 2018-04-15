@@ -28,24 +28,64 @@ public class TimerManager {
 
     #endregion
 
-    private static Dictionary<object, List<TimeUp>> TimeBook;
+    private static Dictionary<object, List<TimeUp>> TimeBookGlobal;
+    private static Dictionary<object, List<TimeUp>> TimeBookGame;
+    private static Dictionary<object, List<TimeUp>> TimeBookMenu;
+
+    /// <summary>
+    /// Define updated timebook
+    /// True for game timebook
+    /// False for menu timebook (default)
+    /// Global timebook is alwayse update
+    /// </summary>
+    public static bool InGame = false;
+
 
     /// <summary>
     /// Explicit
     /// </summary>
     /// <param name="from"> write just "this" here </param>
     /// <param name="timer"></param>
-    public void AddTimer(object from, TimeUp timer) {
+    /// <param name="timebook">
+    /// 0 - for the global timebook (default)
+    /// 1 - for the in game timeBook 
+    /// 2 - for the in menu timebook</param>
+
+    public void AddTimer(object from, TimeUp timer, byte timebook = 0) {
+
+        switch (timebook) {
+            case 0:
+                if (TimeBookGlobal.ContainsKey(from)) {
+                    TimeBookGlobal[from].Add(timer);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(timer);
+                    TimeBookGlobal.Add(from, list);
+                }; break;
+            case 1:
+                if (TimeBookGame.ContainsKey(from)) {
+                    TimeBookGame[from].Add(timer);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(timer);
+                    TimeBookGame.Add(from, list);
+                }; break;
+            case 2:
+                if (TimeBookMenu.ContainsKey(from)) {
+                    TimeBookMenu[from].Add(timer);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(timer);
+                    TimeBookMenu.Add(from, list);
+                }; break;
+        }
 
 
-        if (TimeBook.ContainsKey(from)) {
-            TimeBook[from].Add(timer);
-        }
-        else {
-            List<TimeUp> list = new List<TimeUp>();
-            list.Add(timer);
-            TimeBook.Add(from, list);
-        }
+
+       
     }
 
 
@@ -56,18 +96,42 @@ public class TimerManager {
     /// <param name="from"> Alwayse "this"</param>
     /// <param name="time"> Explicit </param>
     /// <param name="handler"> What you whant to call at the end of the timer</param>
+    /// <param name="timebook">
+    /// 0 - for the global timebook (default)
+    /// 1 - for the in game timeBook 
+    /// 2 - for the in menu timebook</param>
     /// <returns>Timer just created</returns>
-    public Timer CreateSimpleTimer(object from, float time, Timer.toCall handler) {
+    public Timer CreateSimpleTimer(object from, float time, Timer.toCall handler, byte timebook = 0) {
         Timer newOne = new Timer(time, handler);
 
-
-        if (TimeBook.ContainsKey(from)) {
-            TimeBook[from].Add(newOne);
-        }
-        else {
-            List<TimeUp> list = new List<TimeUp>();
-            list.Add(newOne);
-            TimeBook.Add(from, list);
+        switch (timebook) {
+            case 0:
+                if (TimeBookGlobal.ContainsKey(from)) {
+                    TimeBookGlobal[from].Add(newOne);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(newOne);
+                    TimeBookGlobal.Add(from, list);
+                }; break;
+            case 1:
+                if (TimeBookGame.ContainsKey(from)) {
+                    TimeBookGame[from].Add(newOne);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(newOne);
+                    TimeBookGame.Add(from, list);
+                }; break;
+            case 2:
+                if (TimeBookMenu.ContainsKey(from)) {
+                    TimeBookMenu[from].Add(newOne);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(newOne);
+                    TimeBookMenu.Add(from, list);
+                }; break;
         }
 
         return newOne;
@@ -78,11 +142,44 @@ public class TimerManager {
     /// But if you want creat and add in the same time, you can use it
     /// </summary>
     /// <param name="from"> Alwayse "this"</param>
+    /// <param name="timebook">
+    /// 0 - for the global timebook (default)
+    /// 1 - for the in game timeBook 
+    /// 2 - for the in menu timebook</param>
     /// <returns>The Chronos just created</returns>
-    public Chronos CreateSimpleChronos(object from) {
+    public Chronos CreateSimpleChronos(object from, byte timebook = 0) {
         Chronos newOne = new Chronos();
 
-        TimeBook[from].Add(newOne);
+        switch (timebook) {
+            case 0:
+                if (TimeBookGlobal.ContainsKey(from)) {
+                    TimeBookGlobal[from].Add(newOne);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(newOne);
+                    TimeBookGlobal.Add(from, list);
+                }; break;
+            case 1:
+                if (TimeBookGame.ContainsKey(from)) {
+                    TimeBookGame[from].Add(newOne);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(newOne);
+                    TimeBookGame.Add(from, list);
+                }; break;
+            case 2:
+                if (TimeBookMenu.ContainsKey(from)) {
+                    TimeBookMenu[from].Add(newOne);
+                }
+                else {
+                    List<TimeUp> list = new List<TimeUp>();
+                    list.Add(newOne);
+                    TimeBookMenu.Add(from, list);
+                }; break;
+        }
+
 
         return newOne;
     }
@@ -91,18 +188,20 @@ public class TimerManager {
     /// Have to be call one time in the flow parent
     /// </summary>
     public void Init() {
-        TimeBook = new Dictionary<object, List<TimeUp>>();
+        TimeBookGlobal = new Dictionary<object, List<TimeUp>>();
+        TimeBookGame = new Dictionary<object, List<TimeUp>>();
+        TimeBookMenu = new Dictionary<object, List<TimeUp>>();
     }
 
     /// <summary>
     /// Have to be call each update
     /// </summary>
     public void Update(float _dt) {
-        if (TimeBook.Count != 0) {
+        if (TimeBookGlobal.Count != 0) {
 
             List<object> TimerListToRemove = new List<object>();
 
-            foreach (KeyValuePair<object, List<TimeUp>> pair in TimeBook) {
+            foreach (KeyValuePair<object, List<TimeUp>> pair in TimeBookGlobal) {
                 List<int> toRemove = new List<int>();
 
                 for (int i = 0; i < pair.Value.Count; i++) {
@@ -121,9 +220,70 @@ public class TimerManager {
             }
 
             foreach (object o in TimerListToRemove) {
-                TimeBook.Remove(o);
+                TimeBookGlobal.Remove(o);
             }
         }
+
+        if (InGame) {
+
+            if (TimeBookGame.Count != 0) {
+
+                List<object> TimerListToRemove = new List<object>();
+
+                foreach (KeyValuePair<object, List<TimeUp>> pair in TimeBookGame) {
+                    List<int> toRemove = new List<int>();
+
+                    for (int i = 0; i < pair.Value.Count; i++) {
+                        if (pair.Value[i].Update(_dt)) {
+                            toRemove.Add(i);
+                        }
+                    }
+
+                    if (toRemove.Count == pair.Value.Count) {
+                        TimerListToRemove.Add(pair.Key);
+                    }
+
+                    foreach (int i in toRemove) {
+                        pair.Value.RemoveAt(i);
+                    }
+                }
+
+                foreach (object o in TimerListToRemove) {
+                    TimeBookGame.Remove(o);
+                }
+            }
+
+        }
+        else {
+            if (TimeBookMenu.Count != 0) {
+
+                List<object> TimerListToRemove = new List<object>();
+
+                foreach (KeyValuePair<object, List<TimeUp>> pair in TimeBookMenu) {
+                    List<int> toRemove = new List<int>();
+
+                    for (int i = 0; i < pair.Value.Count; i++) {
+                        if (pair.Value[i].Update(_dt)) {
+                            toRemove.Add(i);
+                        }
+                    }
+
+                    if (toRemove.Count == pair.Value.Count) {
+                        TimerListToRemove.Add(pair.Key);
+                    }
+
+                    foreach (int i in toRemove) {
+                        pair.Value.RemoveAt(i);
+                    }
+                }
+
+                foreach (object o in TimerListToRemove) {
+                    TimeBookMenu.Remove(o);
+                }
+            }
+        }
+
+
     }
 }
 
@@ -150,7 +310,7 @@ public class Timer : TimeUp {
     /// <summary>
     /// Timer constructor
     /// </summary>
-    /// <param name="timeToWait">Float based</param>
+    /// <param name="timeToWait">in second </param>
     /// <param name="handler">Delegate who'se gonna be called at the end of the timer</param>
     /// <param name="isTempo">If true, the timer will not onna be destroy at the end of time to wait, but will be relaunch (default : false)</param>
     public Timer(float timeToWait, toCall handler, bool isTempo = false) {
