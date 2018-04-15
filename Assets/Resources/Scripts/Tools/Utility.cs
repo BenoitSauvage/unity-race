@@ -21,13 +21,16 @@ public class Utility {
     #endregion
 
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    /// <summary>
+    /// UI Tool
+    /// </summary>
+    /// <param name="speed"></param>
+    /// <returns>
+    /// Clamped value for Speed-o-meter
+    /// 0 to -225 (theoric max speed) GV._MAXSPEED
+    /// </returns>
+    public float SpeedOMeterClamp(float speed) {
+        return speed / GV._MAXSPEED * -225;
+    }
+
 }
