@@ -14,7 +14,9 @@ public class TimerManager {
 
 
     private TimerManager() {
-        TimeBook = new Dictionary<object, List<TimeUp>>();
+        TimeBookGlobal = new Dictionary<object, List<TimeUp>>();
+        TimeBookGame = new Dictionary<object, List<TimeUp>>();
+        TimeBookMenu = new Dictionary<object, List<TimeUp>>();
     }
 
     public static TimerManager Instance {
