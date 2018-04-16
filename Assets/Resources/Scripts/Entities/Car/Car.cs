@@ -2,12 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class AxleInfo
+{
+    public WheelCollider leftWheel;
+    public WheelCollider rightWheel;
+    public bool motor;
+    public bool steering;
+}
+
+
+
 public class Car : MonoBehaviour
 {
     //car id
     public int carID;
     public float nitro;
     public Rigidbody rg;
+
+
+    //car apply forces 
+    public List<AxleInfo> axleInfos;
+    public float maxMotorTorque;
+    public float maxSteeringAngle;
+
+
 
     //initialise the player with a id
     public void InitCar(int _carID)
@@ -34,10 +53,12 @@ public class Car : MonoBehaviour
     private void FixedUpdate()
     {
         OutputInformation output = InputManager.Instance.GetInputInformation(this.carID);
-        TurnCar(output.direction.x);
-        Accelarate(output.direction.y);
-        Nitro(output.nitro);
-        PowerUpOn(output.powerUpButton);
+        ApplyForcesToTheCar(output);
+
+        //TurnCar(output.direction.x);
+        //Accelarate(output.direction.y);
+        //Nitro(output.nitro);
+        //PowerUpOn(output.powerUpButton);
     }
 
 
@@ -78,7 +99,7 @@ public class Car : MonoBehaviour
                 rg.AddForce(transform.forward * new Vector3(0, 0, -y * 5).magnitude);
             if (y < 0)
                 rg.AddForce(-transform.forward * new Vector3(0, 0, -y * 5).magnitude);
-            
+
         }
     }
 
@@ -111,6 +132,54 @@ public class Car : MonoBehaviour
             Debug.Log("car powerUp : " + powerUpActive);
             rg.AddForce(new Vector3(0, 20, 0));
         }
+    }
+
+
+    // finds the corresponding visual wheel
+    // correctly applies the transform
+    public void ApplyLocalPositionToVisuals(WheelCollider collider)
+    {
+        if (collider.transform.childCount == 0)
+        {
+            return;
+        }
+
+        Transform visualWheel = collider.transform.GetChild(0);
+
+        Vector3 position;
+        Quaternion rotation;
+        collider.GetWorldPose(out position, out rotation);
+
+        visualWheel.transform.position = position;
+        visualWheel.transform.rotation = rotation;
+    }
+
+
+    public void ApplyForcesToTheCar(OutputInformation outputInformation)
+    {
+        float motor = maxMotorTorque * outputInformation.direction.y;
+        float steering = maxSteeringAngle * outputInformation.direction.x;
+
+        foreach (AxleInfo axleInfo in axleInfos)
+        {
+            if (axleInfo.steering)
+            {
+                axleInfo.leftWheel.steerAngle = steering;
+                axleInfo.rightWheel.steerAngle = steering;
+            }
+            if (axleInfo.motor)
+            {
+                axleInfo.leftWheel.motorTorque = motor;
+                axleInfo.rightWheel.motorTorque = motor;
+            }
+            ApplyLocalPositionToVisuals(axleInfo.leftWheel);
+            ApplyLocalPositionToVisuals(axleInfo.rightWheel);
+        }
+
+
+
+        // add code for the nitro forces and component 
+
     }
 
 }
