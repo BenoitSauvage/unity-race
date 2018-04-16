@@ -68,6 +68,9 @@ public class FlowManager {
             case GV.SCENENAMES.ArchitectureScene:
                 flow = new ArchitectureSceneFlow();
                 break;
+            case GV.SCENENAMES.UIScene:
+                flow = new UISceneFlow();
+                break;
             default:
                 flow = new MainSceneFlow();
                 Debug.LogError("Flow not found for scene : " + _flow.ToString());
