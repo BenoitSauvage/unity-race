@@ -11,3 +11,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ArchitectureScene.unity
     guid: ce0122c1a9ec844c89a1ab0ef90feb0d
+  - enabled: 1
+    path: Assets/Scenes/UIScene.unity
+    guid: d0d17ae77d09e4a948ff436e6c844f61
+  - enabled: 1
+    path: Assets/Scenes/ToolsScene.unity
+    guid: da4a55ebb3f3448e28e46bfe0affcb04
+  - enabled: 1
+    path: Assets/Scenes/SupportScene.unity
+    guid: a76d169ddec7d4930aa3034151e21a9c
+  - enabled: 1
+    path: Assets/Scenes/MechanicsScene.unity
+    guid: 8a65852cba09241538f287fc4978bcb5
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 70861853189caa341981bfce18ee6dbc
+  - enabled: 1
+    path: Assets/Scenes/AnimationScene.unity
+    guid: 962f056ca7ff042ac90332827417964e
