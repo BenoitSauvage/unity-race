@@ -25,7 +25,7 @@ public class Car : MonoBehaviour {
 	// Initialise the player with a id
 	public void InitCar (int _carID) {
         carID = _carID;
-        rb = gameObject.AddComponent<Rigidbody>();
+        rb = gameObject.GetComponent<Rigidbody>();
         rb.mass = GV.CAR_MASS;
     }
 
@@ -35,10 +35,7 @@ public class Car : MonoBehaviour {
     }
 
     public void FixedUpdateCar (OutputInformation output) {
-        TurnCar(output.direction.x);
-        Accelarate(output.direction.y);
-        Nitro(output.nitro);
-        PowerUpOn(output.powerUpButton);
+        ApplyForcesToTheCar(output);
     }
 
     // The car left / right
@@ -100,7 +97,7 @@ public class Car : MonoBehaviour {
     }
 
     public void ApplyForcesToTheCar(OutputInformation outputInformation) {
-        Debug.Log(outputInformation);
+        Debug.Log("FORCES");
         float motor = maxMotorTorque * outputInformation.direction.y;
         float steering = maxSteeringAngle * outputInformation.direction.x;
 
