@@ -22,20 +22,52 @@ public class Car : MonoBehaviour {
     private Rigidbody rb;
     private float nitro = 0f;
 
+    private Chronos upsideDownTimer;
+    private bool isUpsideDown;
+    public bool upsideDown { get { return isUpsideDown; } set { SetUpsideDown(value); }}
+
 	// Initialise the player with a id
 	public void InitCar (int _carID) {
         carID = _carID;
         rb = gameObject.GetComponent<Rigidbody>();
         rb.mass = GV.CAR_MASS;
+
+        upsideDownTimer = TimerManager.Instance.CreateSimpleChronos(this, 1);
+        upsideDownTimer.OnPause = true;
     }
 
-	// Update function of the car will be called in the car ou PlayerManager
-	public void UpdateCar (float _dt) {
+
+    private void SetUpsideDown(bool _newValue) {
+        if (_newValue != isUpsideDown) {
+            Debug.Log("Car flipped : " + _newValue);
+
+            if (_newValue) {
+                upsideDownTimer.OnPause = false;
+                Debug.Log("TimerUpaused");
+            } else {
+                // @TODO Replace with reset function
+                upsideDownTimer.Kill();
+                upsideDownTimer = TimerManager.Instance.CreateSimpleChronos(this, 1);
+                upsideDownTimer.OnPause = true;
+
+                Debug.Log("Timer destroy and reset");
+            }
+
+            isUpsideDown = _newValue;
+        }
+    }
+
+    // Update function of the car will be called in the PlayerManager
+    public void UpdateCar(float _dt) {
         // @TODO
     }
 
     public void FixedUpdateCar (OutputInformation output) {
         ApplyForcesToTheCar(output);
+    }
+
+    public float GetUpsideDownTimerValue() {
+        return upsideDownTimer.Value;
     }
 
     // The car left / right
@@ -97,7 +129,6 @@ public class Car : MonoBehaviour {
     }
 
     public void ApplyForcesToTheCar(OutputInformation outputInformation) {
-        Debug.Log("FORCES");
         float motor = maxMotorTorque * outputInformation.direction.y;
         float steering = maxSteeringAngle * outputInformation.direction.x;
 
