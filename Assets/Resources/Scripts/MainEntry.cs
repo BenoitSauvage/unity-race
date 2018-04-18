@@ -12,7 +12,6 @@ public class MainEntry : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         GameObject.DontDestroyOnLoad(gameObject);
-
         try {
             FlowManager.Instance.InitializeFlowManager(
                 (GV.SCENENAMES)System.Enum.Parse(
