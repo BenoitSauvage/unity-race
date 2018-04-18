@@ -32,9 +32,9 @@ public class SoundManager {
     public void Play() {
 
        stingSource = GameObject.Find("Main Camera").GetComponent<AudioSource>();
-       AudioClip s1 = Resources.Load<>
+       // AudioClip s1 = Resources.Load<>
 
-       stingSource.Play();
+       // stingSource.Play();
     }
   
 }

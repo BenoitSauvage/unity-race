@@ -32,7 +32,7 @@ public class Car : MonoBehaviour {
         rb = gameObject.GetComponent<Rigidbody>();
         rb.mass = GV.CAR_MASS;
 
-        upsideDownTimer = TimerManager.Instance.CreateSimpleChronos(this, 1);
+        upsideDownTimer = TimerManager.Instance.CreateSimpleChronos(this, TimerManager.Timebook.InGame);
         upsideDownTimer.OnPause = true;
     }
 
@@ -45,9 +45,7 @@ public class Car : MonoBehaviour {
                 upsideDownTimer.OnPause = false;
                 Debug.Log("TimerUpaused");
             } else {
-                // @TODO Replace with reset function
-                upsideDownTimer.Kill();
-                upsideDownTimer = TimerManager.Instance.CreateSimpleChronos(this, 1);
+                upsideDownTimer.Reset();
                 upsideDownTimer.OnPause = true;
 
                 Debug.Log("Timer destroy and reset");
