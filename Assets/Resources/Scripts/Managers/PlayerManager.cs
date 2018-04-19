@@ -51,8 +51,6 @@ public class PlayerManager {
         else
             _player.upsideDown = false;
 
-        Debug.Log(_player.GetUpsideDownTimerValue());
-
         if (_player.GetUpsideDownTimerValue() >= GV.CAR_UPSIDEDOWN_TIME)
             ResetCarPosition(_player);
     }
