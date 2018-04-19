@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class WS : MonoBehaviour {
 
-    public List<Transform> spawnPoints;
+    [Tooltip("Transform holding all checkpoints")]
+    public Transform checkpoints;
 
     public void Awake() {
         GV.ws = this;

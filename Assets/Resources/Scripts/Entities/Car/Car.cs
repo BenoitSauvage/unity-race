@@ -18,7 +18,7 @@ public class Car : MonoBehaviour {
     public float maxSteeringAngle;
 
     // Car id
-    private int carID;
+    public int carID { get; private set; }
     private Rigidbody rb;
     private float nitro = 0f;
 
@@ -36,19 +36,13 @@ public class Car : MonoBehaviour {
         upsideDownTimer.OnPause = true;
     }
 
-
     private void SetUpsideDown(bool _newValue) {
         if (_newValue != isUpsideDown) {
-            Debug.Log("Car flipped : " + _newValue);
-
             if (_newValue) {
                 upsideDownTimer.OnPause = false;
-                Debug.Log("TimerUpaused");
             } else {
                 upsideDownTimer.Reset();
                 upsideDownTimer.OnPause = true;
-
-                Debug.Log("Timer destroy and reset");
             }
 
             isUpsideDown = _newValue;
@@ -66,6 +60,11 @@ public class Car : MonoBehaviour {
 
     public float GetUpsideDownTimerValue() {
         return upsideDownTimer.Value;
+    }
+
+    public void ResetVelocity() {
+        rb.velocity = new Vector3();
+        rb.angularVelocity = new Vector3();
     }
 
     // The car left / right
@@ -113,7 +112,7 @@ public class Car : MonoBehaviour {
     // Finds the corresponding visual wheel
     // correctly applies the transform
     public void ApplyLocalPositionToVisuals(WheelCollider collider) {
-        if (collider.transform.childCount == 0) 
+        if (collider.transform.childCount == 0)
             return;
 
         Transform visualWheel = collider.transform.GetChild(0);

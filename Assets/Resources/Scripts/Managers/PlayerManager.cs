@@ -20,7 +20,6 @@ public class PlayerManager {
     #endregion singleton
 
     private Dictionary<int, Car> players = new Dictionary<int, Car>();
-    private Dictionary<int, bool> upsideDowns = new Dictionary<int, bool>();
 
     public void Init () {
         GameObject[] cars = GameObject.FindGameObjectsWithTag(GV.CAR_TAG);
@@ -29,13 +28,16 @@ public class PlayerManager {
             Car car = cars[i].GetComponent<Car>();
             car.InitCar(i);
             players.Add(i, car);
-            upsideDowns.Add(i, false);
         }
+    }
+
+    public Dictionary<int, Car> GetPlayers() {
+        return players;
     }
 
     public void Update (float _dt) {
         foreach (KeyValuePair<int, Car> kv in players)
-            CheckPlayerUpsideDown(kv.Value);
+            CheckPlayerStuck(kv.Value);
     }
 
     public void FixedUpdate (float _fdt) {
@@ -43,15 +45,17 @@ public class PlayerManager {
             kv.Value.FixedUpdateCar(InputManager.Instance.GetInputInformation(kv.Key));
     }
 
-    private void CheckPlayerUpsideDown(Car _player) {
+    public float GetPlayerSpeed(int _id) {
+        return 0;
+        // return players[_id].GetSpeed();
+    }
+
+    private void CheckPlayerStuck(Car _player) {
          Vector3 angles = _player.transform.eulerAngles;
 
-        if (angles.z >= GV.CAR_UPSIDEDOWN_RANGE.x && angles.z <= GV.CAR_UPSIDEDOWN_RANGE.y)
-            _player.upsideDown = true;
-        else
-            _player.upsideDown = false;
+        _player.upsideDown = (angles.z >= GV.CAR_UPSIDEDOWN_RANGE.x && angles.z <= GV.CAR_UPSIDEDOWN_RANGE.y);
 
-        if (_player.GetUpsideDownTimerValue() >= GV.CAR_UPSIDEDOWN_TIME)
+        if (_player.GetUpsideDownTimerValue() >= GV.CAR_UPSIDEDOWN_TIME || _player.transform.position.y <= GV.CAR_FALL_LIMIT)
             ResetCarPosition(_player);
     }
 
@@ -62,7 +66,9 @@ public class PlayerManager {
         _player.upsideDown = false;
         _player.transform.eulerAngles = angles;
 
-        _player.transform.position = GV.ws.spawnPoints[0].position;
+        _player.transform.position = CheckpointManager.Instance.GetLastCheckpoint(_player.carID).transform.position;
+        _player.transform.rotation = Quaternion.identity;
+        _player.ResetVelocity();
 
         Debug.Log("Car position reset");
     }
