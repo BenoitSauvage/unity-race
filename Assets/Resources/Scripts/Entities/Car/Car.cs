@@ -23,8 +23,12 @@ public class Car : MonoBehaviour {
     private float nitro = 0f;
 
     private Chronos upsideDownTimer;
-    private bool isUpsideDown;
+    private bool isUpsideDown = false;
     public bool upsideDown { get { return isUpsideDown; } set { SetUpsideDown(value); }}
+
+	private void Awake() {
+        Debug.Log(transform.position);
+	}
 
 	// Initialise the player with a id
 	public void InitCar (int _carID) {

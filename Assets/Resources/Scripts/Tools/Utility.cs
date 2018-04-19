@@ -32,16 +32,18 @@ public class Utility {
     /// 0 to -225 (theoric max speed) GV._MAXSPEED
     /// </returns>
     public float SpeedOMeterClamp(float speed) {
-        float angle = speed / GV._MAXSPEED * -200;
+        float angle = speed / GV.MAX_CAR_SPEED * -200;
 
-        if (angle < -225) {
-            Debug.Log("Error : Car speed max superior of Speed-o-meter  maximum");
-            angle = -225;
+        if (angle < -240) {
+            //Debug.Log("Error : Car speed max superior of Speed-o-meter  maximum");
+            angle = Random.value < .5 ? -241 : -239;
         }
         else if (angle > 0) {
-            Debug.Log("Car speed is negativ... Be sure sure this is normal");
+            //Debug.Log("Car speed is negativ... Be sure sure this is normal");
             angle *= -1;
         }
+
+       // Debug.Log(angle);
 
         return angle;
     }
