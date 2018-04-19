@@ -6,14 +6,16 @@ public class UISceneFlow : Flow {
 
     /*
      * Managers have to be called in this order :
-     * - TimerManager
      * - PlayerManager
+     * - CheckpointManager
      * - InputManager
      */
 
     public override void InitializeFlow() {
         TimerManager.InGame = true;
+
         PlayerManager.Instance.Init();
+        CheckpointManager.Instance.Init();
         // InputManager.Instance.Init(); // -> Does nothing for now
     }
 

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-//class that contains the output information
 public class OutputInformation {
     public Vector2 direction;
     public bool nitro;
