@@ -8,7 +8,6 @@ public class GV : MonoBehaviour {
 
     // GLOBAL VARIABLES
     public enum SCENENAMES { DUMMY, UIScene, MainEntryScene, MainMenu, MainScene, ArchitectureScene, ToolsScene }
-    public static float _MAXSPEED = 5f;
 
     // CAR INFORMATION (player)
     public static readonly string CAR_TAG = "Car";

@@ -5,13 +5,13 @@ using UnityEngine;
 public class ToolsSceneFlow : Flow {
 
     public override void InitializeFlow() {
-        Debug.Log("Init flow called");
-
+        TimerManager.InGame = true;
         SoundManager.Instance.Play();
+        UIManager.Instance.Init();
     }
 
     public override void UpdateFlow(float _dt) {
-        // @TODO
+        UIManager.Instance.Update(_dt);
     }
 
     public override void FixedUpdateFlow(float _fdt) {

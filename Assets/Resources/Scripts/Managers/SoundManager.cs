@@ -8,34 +8,27 @@ public class SoundManager {
     #region Singleton
     private static SoundManager instance;
 
-
     private SoundManager() {
-        stingSource = GameObject.Find("Main Camera").GetComponent<AudioSource>();
+        stingSource = GameObject.Find("CameraP1").GetComponent<AudioSource>();
         s1 = Resources.Load<AudioClip>("Sound/sound1");
-
     }
 
     public static SoundManager Instance {
         get {
-            if (instance == null) {
+            if (instance == null) 
                 instance = new SoundManager();
-            }
             return instance;
         }
     }
 
     #endregion
 
-    public AudioSource stingSource;
     AudioClip s1;
+    public AudioSource stingSource;
     public float bpm = 128;
 
-
-
-
     public void Play() {
-       stingSource = GameObject.Find("Main Camera").GetComponent<AudioSource>();
-    }
-  
+       stingSource.Play();
+    }  
 }
 
