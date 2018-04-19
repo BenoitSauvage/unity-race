@@ -328,6 +328,29 @@ public class Timer : TimeUp {
         }
         return toDestroy;
     }
+
+
+    public override string ToString() {
+        float second = 0;
+        int minutes = 0;
+        string backer = "";
+
+        if (TimeLeft > 60) {
+            second = TimeLeft % 60;
+            if (second > 60) {
+                minutes = Mathf.FloorToInt(second / 60);
+                second = second % 60;
+            }
+        }
+        else {
+            second = TimeLeft;
+        }
+
+        backer = "" + minutes + " : " + second;
+
+        return backer;
+    }
+
 }
 
 /// <summary>
@@ -346,6 +369,27 @@ public class Chronos : TimeUp{
 
     public void Reset() {
         Value = 0;
+    }
+
+    public override string ToString() {
+        float second = 0;
+        int minutes = 0;
+        string backer = "";
+
+        if (Value > 60) {
+            second = Value % 60;
+            if (second > 60) {
+                minutes = Mathf.FloorToInt(second / 60);
+                second = second % 60;
+            }
+        }
+        else {
+            second = Value;
+        }
+
+        backer = "" + minutes + " : " + second;  
+
+        return backer;
     }
 
     /// <summary>
