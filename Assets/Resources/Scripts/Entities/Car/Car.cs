@@ -3,146 +3,117 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class AxleInfo
-{
+public class AxisInfo {
     public WheelCollider leftWheel;
     public WheelCollider rightWheel;
     public bool motor;
     public bool steering;
 }
 
+public class Car : MonoBehaviour {
 
-
-public class Car : MonoBehaviour
-{
-    //car id
-    public int carID;
-    public float nitro;
-    public Rigidbody rg;
-
-
-    //car apply forces 
-    public List<AxleInfo> axleInfos;
+    // Car axis and forces
+    public List<AxisInfo> axisInfos;
     public float maxMotorTorque;
     public float maxSteeringAngle;
 
+    // Car id
+    public int carID { get; private set; }
+    private Rigidbody rb;
+    private float nitro = 0f;
 
+    private Chronos upsideDownTimer;
+    private bool isUpsideDown;
+    public bool upsideDown { get { return isUpsideDown; } set { SetUpsideDown(value); }}
 
-    //initialise the player with a id
-    public void InitCar(int _carID)
-    {
+	// Initialise the player with a id
+	public void InitCar (int _carID) {
         carID = _carID;
-        nitro = 0;
-        rg = transform.GetComponent<Rigidbody>();
-    }
-    //monobehvaiour start function for test
-    private void Start()
-    {
-        //carID = 0;
-        nitro = 0;
-        rg = transform.GetComponent<Rigidbody>();
+        rb = gameObject.GetComponent<Rigidbody>();
+        rb.mass = GV.CAR_MASS;
+
+        upsideDownTimer = TimerManager.Instance.CreateSimpleChronos(this, TimerManager.Timebook.InGame);
+        upsideDownTimer.OnPause = true;
     }
 
+    private void SetUpsideDown(bool _newValue) {
+        if (_newValue != isUpsideDown) {
+            if (_newValue) {
+                upsideDownTimer.OnPause = false;
+            } else {
+                upsideDownTimer.Reset();
+                upsideDownTimer.OnPause = true;
+            }
 
-    //monobehaviour update for test
-    //public void Update()
-    //{
-    //}
-
-    //monoBehaviour fixedUpdate for test
-    private void FixedUpdate()
-    {
-        OutputInformation output = InputManager.Instance.GetInputInformation(this.carID);
-        ApplyForcesToTheCar(output);
-
-        //TurnCar(output.direction.x);
-        //Accelarate(output.direction.y);
-        //Nitro(output.nitro);
-        //PowerUpOn(output.powerUpButton);
-    }
-
-
-    //update function of the car will be called in the car ou PlayerManager
-    public void UpdateCar(float dt)
-    {
-
-    }
-
-
-    public void FixedUpdateCar()
-    {
-        OutputInformation output = InputManager.Instance.GetInputInformation(this.carID);
-        TurnCar(output.direction.x);
-        Accelarate(output.direction.y);
-        Nitro(output.nitro);
-        PowerUpOn(output.powerUpButton);
-    }
-
-
-    //the car left / right
-    private void TurnCar(float x)
-    {
-        if (x != 0)
-        {
-            Debug.Log("car direction x : " + x);
-            rg.AddTorque(new Vector3(0, x * 2, 0));
+            isUpsideDown = _newValue;
         }
     }
 
-    //the car acceleration
-    private void Accelarate(float y)
-    {
-        if (y != 0)
-        {
+    // Update function of the car will be called in the PlayerManager
+    public void UpdateCar(float _dt) {
+        // @TODO
+    }
+
+    public void FixedUpdateCar (OutputInformation output) {
+        ApplyForcesToTheCar(output);
+    }
+
+    public float GetUpsideDownTimerValue() {
+        return upsideDownTimer.Value;
+    }
+
+    public void ResetVelocity() {
+        rb.velocity = new Vector3();
+        rb.angularVelocity = new Vector3();
+    }
+
+    // The car left / right
+    private void TurnCar (float x) {
+        if (x != 0) {
+            Debug.Log("car direction x : " + x);
+            rb.AddTorque(new Vector3(0, x * 2, 0));
+        }
+    }
+
+    // The car acceleration
+    private void Accelarate (float y) {
+        if (y != 0) {
             Debug.Log("car direction y : " + y);
             if (y > 0)
-                rg.AddForce(transform.forward * new Vector3(0, 0, -y * 5).magnitude);
+                rb.AddForce(transform.forward * new Vector3(0, 0, -y * 5).magnitude);
             if (y < 0)
-                rg.AddForce(-transform.forward * new Vector3(0, 0, -y * 5).magnitude);
-
+                rb.AddForce(-transform.forward * new Vector3(0, 0, -y * 5).magnitude);
         }
     }
 
-    //declencher the nitro 
-    private void Nitro(bool isNitro)
-    {
-        if (isNitro)
-        {
+    // Declencher the nitro 
+    private void Nitro(bool isNitro) { 
+        if (isNitro) {
             Debug.Log("car nitro : " + isNitro);
             nitro += 5;
-            if (nitro >= GV.MAX_AMOUNT_NITRO)
-            {
+            if (nitro >= GV.MAX_AMOUNT_NITRO) 
                 nitro = GV.MAX_AMOUNT_NITRO;
-            }
         }
-        if (nitro != 0)
-        {
-            rg.AddForce(new Vector3(0, nitro, 0));
+
+        if (nitro != 0) {
+            rb.AddForce(new Vector3(0, nitro, 0));
             nitro = 0;
         }
-
     }
 
-
-    //dechlencher the power-up
-    private void PowerUpOn(bool powerUpActive)
-    {
-        if (powerUpActive)
-        {
+    // Dechlencher the power-up
+    private void PowerUpOn (bool powerUpActive) {
+        if (powerUpActive) {
             Debug.Log("car powerUp : " + powerUpActive);
-            rg.AddForce(new Vector3(0, 20, 0));
+            rb.AddForce(new Vector3(0, 20, 0));
         }
     }
 
-
-    // finds the corresponding visual wheel
+    // Finds the corresponding visual wheel
     // correctly applies the transform
-    public void ApplyLocalPositionToVisuals(WheelCollider collider)
-    {
+    public void ApplyLocalPositionToVisuals(WheelCollider collider) {
         if (collider.transform.childCount == 0)
-        {
             return;
-        }
 
         Transform visualWheel = collider.transform.GetChild(0);
 
@@ -154,32 +125,26 @@ public class Car : MonoBehaviour
         visualWheel.transform.rotation = rotation;
     }
 
-
-    public void ApplyForcesToTheCar(OutputInformation outputInformation)
-    {
+    public void ApplyForcesToTheCar(OutputInformation outputInformation) {
         float motor = maxMotorTorque * outputInformation.direction.y;
         float steering = maxSteeringAngle * outputInformation.direction.x;
 
-        foreach (AxleInfo axleInfo in axleInfos)
-        {
-            if (axleInfo.steering)
-            {
+        foreach (AxisInfo axleInfo in axisInfos) {
+            if (axleInfo.steering) {
                 axleInfo.leftWheel.steerAngle = steering;
                 axleInfo.rightWheel.steerAngle = steering;
             }
-            if (axleInfo.motor)
-            {
+
+            if (axleInfo.motor) {
                 axleInfo.leftWheel.motorTorque = motor;
                 axleInfo.rightWheel.motorTorque = motor;
             }
+
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
             ApplyLocalPositionToVisuals(axleInfo.rightWheel);
         }
 
-
-
         // add code for the nitro forces and component 
-
     }
 
 }

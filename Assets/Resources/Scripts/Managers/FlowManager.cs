@@ -29,18 +29,16 @@ public class FlowManager {
 
         currentScene = _scene;
         currentFlow = CreateFlow(_scene);
-        flowInitialized = true;
-        currentFlow.InitializeFlow();
     }
 
-    public void Update(float _dt) {
+    public void Update (float _dt) {
         TimerManager.Instance.Update(_dt);
 
         if (currentFlow != null && flowInitialized)
             currentFlow.UpdateFlow(_dt);
     }
 
-    public void FixedUpdate(float _dt) {
+    public void FixedUpdate (float _dt) {
         if (currentFlow != null && flowInitialized)
             currentFlow.FixedUpdateFlow(_dt);
     }
@@ -70,6 +68,9 @@ public class FlowManager {
                 break;
             case GV.SCENENAMES.UIScene:
                 flow = new UISceneFlow();
+                break;
+            case GV.SCENENAMES.ToolsScene:
+                flow = new ToolsSceneFlow();
                 break;
             default:
                 flow = new MainSceneFlow();
