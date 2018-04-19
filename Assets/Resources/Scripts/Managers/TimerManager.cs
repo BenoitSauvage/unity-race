@@ -346,7 +346,8 @@ public class Timer : TimeUp {
             second = TimeLeft;
         }
 
-        backer = "" + minutes + " : " + second;
+        backer = "" + minutes + " : " + second.ToString("F3");
+        ;
 
         return backer;
     }
@@ -387,7 +388,7 @@ public class Chronos : TimeUp{
             second = Value;
         }
 
-        backer = "" + minutes + " : " + second;  
+        backer = "" + minutes + " : " + second.ToString("F3");
 
         return backer;
     }
