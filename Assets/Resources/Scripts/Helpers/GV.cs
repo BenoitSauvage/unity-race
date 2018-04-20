@@ -14,5 +14,7 @@ public class GV : MonoBehaviour
     public static readonly float MAX_AMOUNT_NITRO = 10;
     public static readonly float MAX_CAR_SPEED = 10;
 
+    // POWER UP
+    public static readonly float POWERUP_ROTATE_SEED = 2.5f; 
 
 }
