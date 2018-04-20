@@ -63,12 +63,6 @@ public class FlowManager {
             case GV.SCENENAMES.MainScene:
                 flow = new MainSceneFlow();
                 break;
-            case GV.SCENENAMES.ArchitectureScene:
-                flow = new ArchitectureSceneFlow();
-                break;
-            case GV.SCENENAMES.UIScene:
-                flow = new UISceneFlow();
-                break;
             case GV.SCENENAMES.ToolsScene:
                 flow = new ToolsSceneFlow();
                 break;

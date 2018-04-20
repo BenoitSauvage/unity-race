@@ -39,7 +39,7 @@ public class GameMananger {
                 "Materials/Materials/Player" + (_id + 1)
             );
 
-        car.transform.position = _spawn.localPosition;
+        car.transform.position = _spawn.position;
         car.transform.eulerAngles = _spawn.eulerAngles;
 
         SetupCamera(car);
