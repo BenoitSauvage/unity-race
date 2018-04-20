@@ -34,10 +34,15 @@ public class PowerUp : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
 
-        if (other.transform.tag == "Car") {
+        Debug.Log("On trigger enter");
+
+        if (other.transform.tag == GV.CAR_TAG) {
             Car car = other.GetComponent<Car>();
 
-            PowerUpManager.Instance.PowerUpTouched(Id, car.getId());
+            Debug.Log("Touch by car");
+
+            //TODO Update Nitro
+            
             gameObject.SetActive(false);
             TimerManager.Instance.AddTimer(this, activator);
         }
