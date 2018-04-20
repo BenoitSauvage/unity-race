@@ -53,7 +53,7 @@ public class CarController : MonoBehaviour
     //the current speed of the car en miles per hours 
     public float CurrentSpeed { get { return m_Rigidbody.velocity.magnitude * 2.23693629f; } }
     //max speed of the car by the selected unité
-    public float MaxSpeed { get { return m_Topspeed; } }
+    public float MaxSpeed { get; private set; }
 
     public float Revs { get; private set; }
     public float AccelInput { get; private set; }
@@ -70,6 +70,8 @@ public class CarController : MonoBehaviour
         m_WheelColliders[0].attachedRigidbody.centerOfMass = m_CentreOfMassOffset;
 
         m_MaxHandbrakeTorque = float.MaxValue;
+
+        MaxSpeed = GV.MAX_CAR_SPEED;
 
         m_Rigidbody = GetComponent<Rigidbody>();
         m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl * m_FullTorqueOverAllWheels);

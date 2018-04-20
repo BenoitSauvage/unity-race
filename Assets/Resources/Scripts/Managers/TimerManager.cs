@@ -335,19 +335,16 @@ public class Timer : TimeUp {
         int minutes = 0;
         string backer = "";
 
+
         if (TimeLeft > 60) {
+            minutes = Mathf.FloorToInt(TimeLeft / 60);
             second = TimeLeft % 60;
-            if (second > 60) {
-                minutes = Mathf.FloorToInt(second / 60);
-                second = second % 60;
-            }
         }
         else {
             second = TimeLeft;
         }
 
-        backer = "" + minutes + " : " + second.ToString("F3");
-        ;
+        backer = "" + minutes + " : " + second.ToString("F2");
 
         return backer;
     }
@@ -378,17 +375,14 @@ public class Chronos : TimeUp{
         string backer = "";
 
         if (Value > 60) {
+            minutes = Mathf.FloorToInt(Value / 60);
             second = Value % 60;
-            if (second > 60) {
-                minutes = Mathf.FloorToInt(second / 60);
-                second = second % 60;
-            }
         }
         else {
             second = Value;
         }
 
-        backer = "" + minutes + " : " + second.ToString("F3");
+        backer = "" + minutes + " : " + second.ToString("F1");
 
         return backer;
     }

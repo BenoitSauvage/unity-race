@@ -34,7 +34,7 @@ public class PowerUp : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
 
-        Debug.Log("On trigger enter");
+        Debug.Log("On trigger enter : " + other.transform.tag);
 
         if (other.transform.tag == GV.CAR_TAG) {
             Car car = other.GetComponent<Car>();
