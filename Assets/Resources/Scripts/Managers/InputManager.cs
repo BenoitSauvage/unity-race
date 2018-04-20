@@ -10,7 +10,7 @@ public class OutputInformation
     public Vector2 direction;
     public bool nitro;
     public bool powerUpButton;
-
+    public float brake;
 
     public OutputInformation()
     {
@@ -45,6 +45,7 @@ public class InputManager
         OutputInformation output = new OutputInformation();
         output.direction.x = Input.GetAxis("Horizontal" + CarID);
         output.direction.y = Input.GetAxis("Vertical" + CarID);
+        output.brake = Input.GetAxis("Jump" + CarID);
         if (Input.GetAxis("Nitro" + CarID) != 0)
         {
             output.nitro = true;
