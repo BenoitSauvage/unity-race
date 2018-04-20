@@ -307,7 +307,7 @@ public class Timer : TimeUp {
     }
 
     public void Kill() {
-        toDestroy = false;
+        toDestroy = true;
     }
 
     /// <summary>
@@ -317,16 +317,18 @@ public class Timer : TimeUp {
     /// <param name="deltaTime"></param>
     /// <returns>if it return true Timer gonna be kill</returns>
     public override bool Update(float deltaTime) {
+        bool toReturn = toDestroy;
+
         if (!toDestroy && !OnPause) {
             TimeLeft -= deltaTime;
             if (TimeLeft <= 0) {
-                if (!isTempo) toDestroy = true;
+                if (!isTempo) toReturn = true;
 
                 TimeLeft = FirstTime;
                 handler.Invoke();
             }
         }
-        return toDestroy;
+        return toReturn;
     }
 
 
