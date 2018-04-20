@@ -26,12 +26,12 @@ public class CheckpointManager {
         foreach (Transform t in GV.ws.checkpoints)
             checkpoints.Add(t.GetComponent<Checkpoint>());
 
-        foreach (KeyValuePair<int, Car> kv in PlayerManager.Instance.GetPlayers())
-            playerCheckpoints.Add(kv.Value.carID, checkpoints[0]);
+        foreach (KeyValuePair<int, CarUserControl> kv in PlayerManager.Instance.GetPlayers())
+            playerCheckpoints.Add(kv.Value.IDCar, checkpoints[0]);
     }
 
     public void CheckpointTriggered(Checkpoint _checkpoint, Transform _player) {
-        int player_id = _player.GetComponent<Car>().carID;
+        int player_id = _player.GetComponent<CarUserControl>().IDCar;
 
         if (checkpoints.IndexOf(_checkpoint) > checkpoints.IndexOf(playerCheckpoints[player_id]))
             playerCheckpoints[player_id] = _checkpoint;

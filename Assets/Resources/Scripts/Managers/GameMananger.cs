@@ -30,13 +30,14 @@ public class GameMananger {
 
     private void SpawnCar (int _id, Transform _spawn) {
         GameObject car = GameObject.Instantiate(
-            Resources.Load<GameObject>("Prefabs/Car")
+            Resources.Load<GameObject>("Prefabs/CarOriginal")
         );
-        Transform car_body = GetCarBody(car);
 
-        car_body.GetComponent<MeshRenderer>().material = Resources.Load<Material>(
-            "Materials/Materials/Player" + (_id + 1)
-        );
+        Transform car_body = GetCarBody(car);
+        foreach (Transform parts in car_body)
+            parts.GetComponent<MeshRenderer>().material = Resources.Load<Material>(
+                "Materials/Materials/Player" + (_id + 1)
+            );
 
         car.transform.position = _spawn.localPosition;
         car.transform.eulerAngles = _spawn.eulerAngles;
@@ -45,7 +46,7 @@ public class GameMananger {
     }
 
     private Transform GetCarBody(GameObject _car) {
-        return _car.transform.Find("Body");
+        return _car.transform.Find("SkyCar").Find("SkyCarBody");
     }
 
     private void SetupCamera(GameObject _car) {
