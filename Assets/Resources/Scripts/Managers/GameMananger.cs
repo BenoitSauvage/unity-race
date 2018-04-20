@@ -33,6 +33,8 @@ public class GameMananger {
             Resources.Load<GameObject>("Prefabs/CarOriginal")
         );
 
+        car.name = "CarOriginal" + _id;
+
         Transform car_body = GetCarBody(car);
         foreach (Transform parts in car_body)
             parts.GetComponent<MeshRenderer>().material = Resources.Load<Material>(

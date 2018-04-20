@@ -306,10 +306,6 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1311300280048986, guid: 670d5d9d688ba2f438ce15c158fcc17c, type: 2}
-      propertyPath: m_Name
-      value: Dashboard_UI
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 670d5d9d688ba2f438ce15c158fcc17c, type: 2}
   m_IsPrefabParent: 0

@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 222726779168553378}
   - component: {fileID: 114261967312726974}
   m_Layer: 5
-  m_Name: Speedometer
+  m_Name: SpeedometerP1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 222051731191367280}
   - component: {fileID: 114281159522835534}
   m_Layer: 5
-  m_Name: Position
+  m_Name: Position1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 222138317069877016}
   - component: {fileID: 114182063747409526}
   m_Layer: 5
-  m_Name: Position
+  m_Name: Position2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 222117334989020960}
   - component: {fileID: 114213107390857080}
   m_Layer: 5
-  m_Name: Speedometer
+  m_Name: SpeedometerP2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -30,14 +30,18 @@ public class UIManager {
     Text timer;
 
     Chronos chronos;
-
+    CarController player1;
+    CarController player2;
 
     public void Init() {
         speedOMeterP1 = GameObject.Find("SpeedometerP1").GetComponent<RectTransform>();
         speedOMeterP2 = GameObject.Find("SpeedometerP2").GetComponent<RectTransform>();
-        positionP1 = GameObject.Find("PositionP1").GetComponent<Text>();
-        positionP2 = GameObject.Find("PositionP2").GetComponent<Text>();
+        positionP1 = GameObject.Find("Position1").GetComponent<Text>();
+        positionP2 = GameObject.Find("Position2").GetComponent<Text>();
         timer = GameObject.Find("Timer").GetComponent<Text>();
+
+        player1 = GameObject.Find("CarOriginal0").GetComponent<CarController>(); 
+        player2 = GameObject.Find("CarOriginal1").GetComponent<CarController>();
 
         chronos = TimerManager.Instance.CreateSimpleChronos(this, TimerManager.Timebook.InGame);
 
@@ -50,8 +54,8 @@ public class UIManager {
 
        
 
-        speedOMeterP1.localEulerAngles = new Vector3(0,0, Utility.Instance.SpeedOMeterClamp(chronos.Value));
-        speedOMeterP2.localEulerAngles = new Vector3(0,0, Utility.Instance.SpeedOMeterClamp(chronos.Value));
+        speedOMeterP1.localEulerAngles = new Vector3(0,0, Utility.Instance.SpeedOMeterClamp(player1.CurrentSpeed));
+        speedOMeterP2.localEulerAngles = new Vector3(0,0, Utility.Instance.SpeedOMeterClamp(player2.CurrentSpeed));
 
 
     }
