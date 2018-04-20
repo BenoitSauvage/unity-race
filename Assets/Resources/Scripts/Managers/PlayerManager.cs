@@ -60,14 +60,16 @@ public class PlayerManager {
     }
 
     private void ResetCarPosition (CarUserControl _player) {
-        Vector3 angles = _player.transform.eulerAngles;
-
-        angles.z = 0;
         _player.upsideDown = false;
-        _player.transform.eulerAngles = angles;
 
-        _player.transform.position = CheckpointManager.Instance.GetLastCheckpoint(_player.IDCar).transform.position;
-        _player.transform.rotation = Quaternion.identity;
+        Checkpoint last_checkpoint = CheckpointManager.Instance.GetLastCheckpoint(_player.IDCar);
+        Vector3 checkpoint_position = last_checkpoint.transform.position;
+
+        // TO PREVENT GLITCHING IN THE ROAD
+        checkpoint_position.y += 2;
+
+        _player.transform.eulerAngles = last_checkpoint.transform.eulerAngles;
+        _player.transform.position = checkpoint_position;
         _player.ResetVelocity();
 
         Debug.Log("Car position reset");
