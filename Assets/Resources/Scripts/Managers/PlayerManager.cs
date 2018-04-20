@@ -46,8 +46,7 @@ public class PlayerManager {
     }
 
     public float GetPlayerSpeed(int _id) {
-        return 0;
-        // return players[_id].GetSpeed();
+        return players[_id].m_Car.CurrentSpeed;
     }
 
     private void CheckPlayerStuck(CarUserControl _player) {

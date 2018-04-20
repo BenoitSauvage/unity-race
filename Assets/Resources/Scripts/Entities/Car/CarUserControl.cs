@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(CarController))]
 public class CarUserControl : MonoBehaviour
 {
-    private CarController m_Car; // the car controller we want to use
+    public CarController m_Car { get; private set; } // the car controller we want to use
     public int IDCar;  //Id of every car
     public float nitro; //the current amout of nitro features will be added after
 
