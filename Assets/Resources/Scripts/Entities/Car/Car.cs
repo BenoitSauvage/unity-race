@@ -113,6 +113,10 @@ public class Car : MonoBehaviour {
         }
     }
 
+    public int getId() {
+        return carID;
+    }
+
     // Finds the corresponding visual wheel
     // correctly applies the transform
     public void ApplyLocalPositionToVisuals(WheelCollider collider) {

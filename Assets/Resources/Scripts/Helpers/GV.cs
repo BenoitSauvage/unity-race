@@ -19,5 +19,7 @@ public class GV : MonoBehaviour {
     public static readonly Vector2 CAR_UPSIDEDOWN_RANGE = new Vector2(90, 270);
     public static readonly float CAR_UPSIDEDOWN_TIME = 3f;
     public static readonly float CAR_FALL_LIMIT = 40f;
+    // POWER UP
+    public static readonly float POWERUP_ROTATE_SEED = 2.5f; 
 
 }

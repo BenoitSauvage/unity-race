@@ -48,4 +48,21 @@ public class Utility {
         return angle;
     }
 
+
+    /// <summary>
+    /// General Util
+    /// </summary>
+    /// <param name="angle"></param>
+    /// <returns>The equivalent angle between 0 and 360</returns>
+    public float ClampAngleCircle(float angle) {
+
+        if (angle > 360) {
+            angle = angle % 360;
+        }
+        while (angle < 0) {
+            angle += 360;
+        }
+        return angle;
+    }
+
 }
