@@ -36,7 +36,7 @@ public class CarController : MonoBehaviour
     [SerializeField] private float m_SlipLimit;
     [SerializeField] private float m_BrakeTorque;
 
-    private Quaternion[] m_WheelMeshLocalRotations;
+    //private Quaternion[] m_WheelMeshLocalRotations;
     private Vector3 m_Prevpos, m_Pos;
     private float m_SteerAngle;
     private int m_GearNum;
@@ -48,7 +48,7 @@ public class CarController : MonoBehaviour
 
     public bool Skidding { get; private set; }
     public float BrakeInput { get; private set; }
-    // angle de direction de car (gauche droite)
+    // angle de direction de car (gauche / droite)
     public float CurrentSteerAngle { get { return m_SteerAngle; } }
     //the current speed of the car en miles per hours 
     public float CurrentSpeed { get { return m_Rigidbody.velocity.magnitude * 2.23693629f; } }
@@ -62,11 +62,11 @@ public class CarController : MonoBehaviour
     // test for monoBehavior function 
     private void Start()
     {
-        m_WheelMeshLocalRotations = new Quaternion[4];
-        for (int i = 0; i < 4; i++)
-        {
-            m_WheelMeshLocalRotations[i] = m_WheelMeshes[i].transform.localRotation;
-        }
+        //m_WheelMeshLocalRotations = new Quaternion[4];
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    m_WheelMeshLocalRotations[i] = m_WheelMeshes[i].transform.localRotation;
+        //}
         m_WheelColliders[0].attachedRigidbody.centerOfMass = m_CentreOfMassOffset;
 
         m_MaxHandbrakeTorque = float.MaxValue;
@@ -79,12 +79,12 @@ public class CarController : MonoBehaviour
     //function init for the car 
     public void Init()
     {
-        m_WheelMeshLocalRotations = new Quaternion[4];
-        for (int i = 0; i < 4; i++)
-        {
-            m_WheelMeshLocalRotations[i] = m_WheelMeshes[i].transform.localRotation;
+        //m_WheelMeshLocalRotations = new Quaternion[4];
+        //for (int i = 0; i < 4; i++)
+        //{
+        //    m_WheelMeshLocalRotations[i] = m_WheelMeshes[i].transform.localRotation;
 
-        }
+        //}
         m_WheelColliders[0].attachedRigidbody.centerOfMass = m_CentreOfMassOffset;
 
         m_MaxHandbrakeTorque = float.MaxValue;
@@ -92,6 +92,8 @@ public class CarController : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
         m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl * m_FullTorqueOverAllWheels);
     }
+
+    #region specification of norme related to the speed of car
 
 
     private void GearChanging()
@@ -110,7 +112,6 @@ public class CarController : MonoBehaviour
             m_GearNum++;
         }
     }
-
 
     // simple function to add a curved bias towards 1 for a value in the 0-1 range
     private static float CurveFactor(float factor)
@@ -147,9 +148,11 @@ public class CarController : MonoBehaviour
         Revs = ULerp(revsRangeMin, revsRangeMax, m_GearFactor);
     }
 
+    #endregion
 
     public void Move(float steering, float accel, float footbrake, float handbrake)
     {
+        //rotate the mesh of the wheel the same thing like the wheel collider
         for (int i = 0; i < 4; i++)
         {
             Quaternion quat;
@@ -171,8 +174,13 @@ public class CarController : MonoBehaviour
         m_WheelColliders[0].steerAngle = m_SteerAngle;
         m_WheelColliders[1].steerAngle = m_SteerAngle;
 
+        //avoid the gimball lock problem 
         SteerHelper();
+
+        //give forces to the car motor and drifting manager
         ApplyDrive(accel, footbrake);
+
+        //transform the speed in good unit (MPH/KPH)
         CapSpeed();
 
         //Set the handbrake.
@@ -204,14 +212,14 @@ public class CarController : MonoBehaviour
                 speed *= 2.23693629f;
                 if (speed > m_Topspeed)
                     m_Rigidbody.velocity = (m_Topspeed / 2.23693629f) * m_Rigidbody.velocity.normalized;
-                Debug.Log("car speed" + speed);
+                //Debug.Log("car speed" + speed);
                 break;
 
             case SpeedType.KPH:
                 speed *= 3.6f;
                 if (speed > m_Topspeed)
                     m_Rigidbody.velocity = (m_Topspeed / 3.6f) * m_Rigidbody.velocity.normalized;
-                Debug.Log("car speed" + speed);
+                Debug.Log("car speed" + CurrentSpeed);
                 break;
         }
     }
@@ -220,6 +228,7 @@ public class CarController : MonoBehaviour
     private void ApplyDrive(float accel, float footbrake)
     {
 
+        //apply forces to the car motor 
         float thrustTorque;
         switch (m_CarDriveType)
         {
@@ -243,6 +252,7 @@ public class CarController : MonoBehaviour
 
         }
 
+        //drifting 
         for (int i = 0; i < 4; i++)
         {
             if (CurrentSpeed > 5 && Vector3.Angle(transform.forward, m_Rigidbody.velocity) < 50f)
