@@ -56,7 +56,7 @@ public class CarController : MonoBehaviour
     public float MaxSpeed { get; private set; }
 
     //nitro amount 
-    float NitroAmount { get; set; }
+    public float NitroAmount { get; set; }
     public ParticleEmitter leftNitroFlame;
     public ParticleEmitter rightNitroFlame;
 

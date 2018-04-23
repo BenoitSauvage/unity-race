@@ -54,7 +54,6 @@ public class PlayerManager {
 
     public void AugmentNitroReserv(int _id) {
         players[_id].FillNitroTank();
-
     }
 
     private void CheckPlayerStuck(CarUserControl _player) {
