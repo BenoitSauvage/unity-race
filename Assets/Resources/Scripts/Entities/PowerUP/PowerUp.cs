@@ -41,10 +41,17 @@ public class PowerUp : MonoBehaviour {
 
             Debug.Log("Touch by car");
 
+            if (other.name == "CarOriginal0") {
+                PlayerManager.Instance.AugmentNitroReserv(0);
+            }
+            else {
+                PlayerManager.Instance.AugmentNitroReserv(1);
+            }
+
             //TODO Update Nitro
-            
+
             gameObject.SetActive(false);
-            TimerManager.Instance.AddTimer(this, activator);
+            TimerManager.Instance.AddTimer(this, activator, TimerManager.Timebook.InGame);
         }
 
     }

@@ -52,6 +52,11 @@ public class PlayerManager {
         return players[_id].m_Car.CurrentSpeed;
     }
 
+    public void AugmentNitroReserv(int _id) {
+        players[_id].nitro = GV.MAX_AMOUNT_NITRO;
+
+    }
+
     private void CheckPlayerStuck(CarUserControl _player) {
          Vector3 angles = _player.transform.eulerAngles;
 
