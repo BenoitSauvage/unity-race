@@ -65,8 +65,10 @@ public class GameMananger {
         if (_id == 0)
             camera.rect = new Rect(0, 0, .5f, 1);
 
-        if (_id == 1)
+        if (_id == 1) {
             camera.rect = new Rect(.5f, 0, 1, 1);
+            camera.GetComponent<AudioListener>().enabled = false;
+        }
     }
 
 }

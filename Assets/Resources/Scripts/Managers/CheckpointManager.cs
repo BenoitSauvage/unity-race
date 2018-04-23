@@ -32,6 +32,7 @@ public class CheckpointManager {
 
     public void CheckpointTriggered(Checkpoint _checkpoint, Transform _player) {
         int player_id = _player.GetComponent<CarUserControl>().IDCar;
+        Debug.Log(player_id);
 
         if (checkpoints.IndexOf(_checkpoint) > checkpoints.IndexOf(playerCheckpoints[player_id]))
             playerCheckpoints[player_id] = _checkpoint;

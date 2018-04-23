@@ -5,7 +5,9 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour {
 
 	private void OnTriggerEnter(Collider other) {
-        if (other.attachedRigidbody && other.transform.CompareTag(GV.CAR_TAG))
-            CheckpointManager.Instance.CheckpointTriggered(this, other.transform);
+        Debug.Log(other.transform.parent.parent.CompareTag(GV.CAR_TAG));
+
+        if (other.attachedRigidbody && other.transform.parent.parent.CompareTag(GV.CAR_TAG))
+            CheckpointManager.Instance.CheckpointTriggered(this, other.transform.parent.parent);
 	}
 }
