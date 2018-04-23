@@ -40,6 +40,7 @@ public class GameMananger {
             parts.GetComponent<MeshRenderer>().material = Resources.Load<Material>(
                 "Materials/Materials/Player" + (_id + 1)
             );
+            
 
         car.transform.position = _spawn.position;
         car.transform.eulerAngles = _spawn.eulerAngles;
