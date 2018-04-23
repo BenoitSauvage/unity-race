@@ -6,6 +6,7 @@ public class OutputInformation {
     public Vector2 direction;
     public bool nitro;
     public bool powerUpButton;
+    public float brake;
 
     public OutputInformation() {}
 }
@@ -43,25 +44,15 @@ public class InputManager {
     public OutputInformation GetInputInformation (int CarID) {
         
         OutputInformation output = new OutputInformation();
+        output.direction.x = Input.GetAxis("Horizontal" + CarID);
+        output.direction.y = Input.GetAxis("Vertical" + CarID);
 
-        try {
-            output.direction.x = Input.GetAxis("Horizontal" + CarID);
-            output.direction.y = Input.GetAxis("Vertical" + CarID);
+        if (Input.GetAxis("Brake" + CarID) != 0)
+            output.brake = Input.GetAxis("Brake" + CarID);
 
-            if (Input.GetAxis("Nitro" + CarID) != 0)
-                output.nitro = true;
-            else 
-                output.nitro = false;
+        output.nitro = Input.GetAxis("Nitro" + CarID) != 0;
+        output.powerUpButton = Input.GetAxis("PowerUp" + CarID) != 0;
 
-            if (Input.GetAxis("PowerUp" + CarID) != 0)
-                output.powerUpButton = true;
-            else
-                output.powerUpButton = false;
-        } catch (System.Exception e) {
-            Debug.LogException(e);
-            Debug.LogError("No input configured for player #" + CarID);
-        }
-       
         return output;
     }
 }

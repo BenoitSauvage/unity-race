@@ -34,7 +34,7 @@ public class Car : MonoBehaviour {
 	public void InitCar (int _carID) {
         carID = _carID;
         rb = gameObject.GetComponent<Rigidbody>();
-        rb.mass = GV.CAR_MASS;
+        // rb.mass = GV.CAR_MASS;
 
         upsideDownTimer = TimerManager.Instance.CreateSimpleChronos(this, TimerManager.Timebook.InGame);
         upsideDownTimer.OnPause = true;
@@ -111,6 +111,10 @@ public class Car : MonoBehaviour {
             Debug.Log("car powerUp : " + powerUpActive);
             rb.AddForce(new Vector3(0, 20, 0));
         }
+    }
+
+    public int getId() {
+        return carID;
     }
 
     // Finds the corresponding visual wheel

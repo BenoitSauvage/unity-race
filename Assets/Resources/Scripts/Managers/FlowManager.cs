@@ -51,7 +51,7 @@ public class FlowManager {
 
     private Flow CreateFlow(GV.SCENENAMES _flow) {
         Flow flow;
-        Debug.Log("Try to create new flow : " + _flow.ToString());
+
 
         switch (_flow) {
             case GV.SCENENAMES.MainEntryScene:
@@ -63,18 +63,14 @@ public class FlowManager {
             case GV.SCENENAMES.MainScene:
                 flow = new MainSceneFlow();
                 break;
-            case GV.SCENENAMES.ArchitectureScene:
-                flow = new ArchitectureSceneFlow();
-                break;
-            case GV.SCENENAMES.UIScene:
-                flow = new UISceneFlow();
-                break;
             case GV.SCENENAMES.ToolsScene:
                 flow = new ToolsSceneFlow();
                 break;
+            case GV.SCENENAMES.ArchitectureScene:
+                flow = new ArchitectureSceneFlow();
+                break;
             default:
                 flow = new MainSceneFlow();
-                Debug.LogError("Flow not found for scene : " + _flow.ToString());
                 break;
         }
 
