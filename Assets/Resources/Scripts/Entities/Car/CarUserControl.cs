@@ -27,6 +27,9 @@ public class CarUserControl : MonoBehaviour
     public void UpdateCar(OutputInformation output)
     {
         m_Car.Nitro(output.nitro);
+
+        if (output.nitro && m_Car.NitroAmount <= 0)
+            m_Car.Nitro(false);
     }
 
     public void FillNitroTank() {

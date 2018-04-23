@@ -63,6 +63,9 @@ public class PlayerManager {
 
         if (_player.GetUpsideDownTimerValue() >= GV.CAR_UPSIDEDOWN_TIME || _player.transform.position.y <= GV.CAR_FALL_LIMIT)
             ResetCarPosition(_player);
+
+        if (Input.GetAxis("Reset" + _player.IDCar) > 0)
+            ResetCarPosition(_player);
     }
 
     private void ResetCarPosition (CarUserControl _player) {

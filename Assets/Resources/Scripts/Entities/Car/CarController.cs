@@ -259,26 +259,20 @@ public class CarController : MonoBehaviour
     //car nitro system
     public void Nitro(bool isActivatedNitro)
     {
-        if (isActivatedNitro && CurrentSpeed > 5 && NitroAmount > 0)
-        {
-            Debug.Log("nitro activated");
-
+        if (isActivatedNitro && NitroAmount > 0) {
             m_CurrentTorque = m_FullTorqueOverAllWheels * GV.NITRO_FORCE;
             leftNitroFlame.emit = true;
             rightNitroFlame.emit = true;
-            NitroAmount--;
-        }
-        else if (!isActivatedNitro)
-        {
+            NitroAmount -= 5;
+            // AccelInput = 1;
+        } else {
             m_CurrentTorque = m_FullTorqueOverAllWheels;
             leftNitroFlame.emit = false;
             rightNitroFlame.emit = false;
         }
 
         if (NitroAmount > GV.MAX_AMOUNT_NITRO)
-        {
             NitroAmount = GV.MAX_AMOUNT_NITRO;
-        }
     }
 
 
