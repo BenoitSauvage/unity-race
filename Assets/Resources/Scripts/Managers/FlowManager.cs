@@ -66,6 +66,9 @@ public class FlowManager {
             case GV.SCENENAMES.ToolsScene:
                 flow = new ToolsSceneFlow();
                 break;
+            case GV.SCENENAMES.ArchitectureScene:
+                flow = new ArchitectureSceneFlow();
+                break;
             default:
                 flow = new MainSceneFlow();
                 break;

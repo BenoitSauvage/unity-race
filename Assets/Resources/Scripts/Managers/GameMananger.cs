@@ -45,7 +45,7 @@ public class GameMananger {
         car.transform.position = _spawn.position;
         car.transform.eulerAngles = _spawn.eulerAngles;
 
-        // SetupCamera(_id, car.transform);
+        SetupCamera(_id, car.transform);
     }
 
     private Transform GetCarBody(GameObject _car) {
@@ -53,17 +53,20 @@ public class GameMananger {
     }
 
     private void SetupCamera(int _id, Transform _car) {
-        /*
-        Transform camera = GV.ws.cameras[_id];
+        Camera camera = _car.Find("CameraCible").Find("Main Camera").GetComponent<Camera>();
 
         Vector3 cam_position = _car.position;
         cam_position.y += 5;
         cam_position.x += 10;
 
-        camera.position = cam_position;
-        camera.SetParent(_car);
-        camera.LookAt(_car);
-        */
+        camera.transform.position = cam_position;
+        camera.transform.LookAt(_car);
+
+        if (_id == 0)
+            camera.rect = new Rect(0, 0, .5f, 1);
+
+        if (_id == 1)
+            camera.rect = new Rect(.5f, 0, 1, 1);
     }
 
 }
