@@ -30,7 +30,7 @@ public class CarController : MonoBehaviour
     [SerializeField] private float m_MaxHandbrakeTorque;
     [SerializeField] private float m_Downforce = 100f;
     [SerializeField] private SpeedType m_SpeedType;
-    [SerializeField] private float m_Topspeed = 200;
+    [SerializeField] private float m_Topspeed = GV.MAX_CAR_SPEED;
     [SerializeField] private static int NoOfGears = 5;
     [SerializeField] private float m_RevRangeBoundary = 1f;
     [SerializeField] private float m_SlipLimit;
@@ -51,9 +51,14 @@ public class CarController : MonoBehaviour
     // angle de direction de car (gauche / droite)
     public float CurrentSteerAngle { get { return m_SteerAngle; } }
     //the current speed of the car en miles per hours 
-    public float CurrentSpeed { get { return m_Rigidbody.velocity.magnitude * 2.23693629f; } }
+    [SerializeField] private float CurrentSpeed { get { return m_Rigidbody.velocity.magnitude * 2.23693629f; } }
     //max speed of the car by the selected unité
     public float MaxSpeed { get { return m_Topspeed; } }
+
+    //nitro amount 
+    float NitroAmount { get; set; }
+    public ParticleEmitter leftNitroFlame;
+    public ParticleEmitter rightNitroFlame;
 
     public float Revs { get; private set; }
     public float AccelInput { get; private set; }
@@ -91,6 +96,8 @@ public class CarController : MonoBehaviour
 
         m_Rigidbody = GetComponent<Rigidbody>();
         m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl * m_FullTorqueOverAllWheels);
+        //init nitro amount to zero 
+        NitroAmount = 0;
     }
 
     #region specification of norme related to the speed of car
@@ -180,6 +187,8 @@ public class CarController : MonoBehaviour
         //give forces to the car motor and drifting manager
         ApplyDrive(accel, footbrake);
 
+        //debugger le curren force ajouter au motor 
+        Debug.Log("Current troque : " + m_CurrentTorque);
         //transform the speed in good unit (MPH/KPH)
         CapSpeed();
 
@@ -249,8 +258,8 @@ public class CarController : MonoBehaviour
                 thrustTorque = accel * (m_CurrentTorque / 2f);
                 m_WheelColliders[2].motorTorque = m_WheelColliders[3].motorTorque = thrustTorque;
                 break;
-
         }
+
 
         //drifting 
         for (int i = 0; i < 4; i++)
@@ -264,6 +273,35 @@ public class CarController : MonoBehaviour
                 m_WheelColliders[i].brakeTorque = 0f;
                 m_WheelColliders[i].motorTorque = -m_ReverseTorque * footbrake;
             }
+        }
+    }
+
+
+    //car nitro system
+    public void Nitro(bool isActivatedNitro)
+    {
+        Debug.Log("nitro activated");
+        if (isActivatedNitro && CurrentSpeed > 5 && NitroAmount > 0)
+        {
+            m_CurrentTorque = m_FullTorqueOverAllWheels * GV.NITRO_FORCE;
+            leftNitroFlame.emit = true;
+            rightNitroFlame.emit = true;
+            NitroAmount--;
+        }
+        else if (!isActivatedNitro)
+        {
+            m_CurrentTorque = m_FullTorqueOverAllWheels;
+            leftNitroFlame.emit = false;
+            rightNitroFlame.emit = false;
+        }
+
+        if (NitroAmount < GV.MAX_AMOUNT_NITRO && !isActivatedNitro && CurrentSpeed > 20)
+        {
+            NitroAmount++;
+        }
+        else if (NitroAmount > GV.MAX_AMOUNT_NITRO)
+        {
+            NitroAmount = GV.MAX_AMOUNT_NITRO;
         }
     }
 

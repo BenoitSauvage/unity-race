@@ -7,7 +7,6 @@ public class CarUserControl : MonoBehaviour
 {
     private CarController m_Car; // the car controller we want to use
     public int IDCar;  //Id of every car
-    public float nitro; //the current amout of nitro features will be added after
 
     //test for monobBehavoir function
     private void Awake()
@@ -22,11 +21,24 @@ public class CarUserControl : MonoBehaviour
     {
         // get the car controller
         m_Car = GetComponent<CarController>();
-
         m_Car.Init();
         IDCar = _IDCar;
-        nitro = 0;
     }
+
+    //function Update used by the monoBehavior class 
+    private void Update()
+    {
+        m_Car.Nitro(InputManager.Instance.GetInputInformation(IDCar).nitro);
+    }
+
+
+
+    //Update function will be called by the Player manager
+    public void UpdateCar(float dt)
+    {
+        //m_Car.Nitro(InputManager.Instance.GetInputInformation(IDCar).nitro);
+    }
+
 
     //function test used by the monoBehavior class 
     private void FixedUpdate()
