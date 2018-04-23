@@ -11,9 +11,10 @@ public class GV : MonoBehaviour {
 
     // CAR INFORMATION (player)
     public static readonly string CAR_TAG = "Car";
-    public static readonly float CAR_MASS = 7;
-    public static readonly float MAX_AMOUNT_NITRO = 10;
-    public static readonly float MAX_CAR_SPEED = 250;
+
+    public static readonly float MAX_AMOUNT_NITRO = 100;
+    public static readonly float MAX_CAR_SPEED = 200;
+    public static readonly float NITRO_FORCE = 3;
 
     // HELPERS
     public static readonly Vector2 CAR_UPSIDEDOWN_RANGE = new Vector2(90, 270);

@@ -7,7 +7,6 @@ public class CarUserControl : MonoBehaviour
 {
     public CarController m_Car { get; private set; } // the car controller we want to use
     public int IDCar;  //Id of every car
-    public float nitro; //the current amout of nitro features will be added after
 
     private Chronos upsideDownTimer;
     private bool isUpsideDown = false;
@@ -17,13 +16,24 @@ public class CarUserControl : MonoBehaviour
     public void InitCar(int _IDCar) {
         // get the car controller
         m_Car = GetComponent<CarController>();
-
         m_Car.Init();
         IDCar = _IDCar;
-        nitro = 0;
 
         upsideDownTimer = TimerManager.Instance.CreateSimpleChronos(this, TimerManager.Timebook.InGame);
         upsideDownTimer.OnPause = true;
+    }
+
+    //Update function will be called by the Player manager
+    public void UpdateCar(OutputInformation output)
+    {
+        m_Car.Nitro(output.nitro);
+    }
+
+
+    //function test used by the monoBehavior class 
+    private void FixedUpdate()
+    {
+        ApplyForcesToTheCar(InputManager.Instance.GetInputInformation(IDCar));
     }
 
     private void SetUpsideDown(bool _newValue) {

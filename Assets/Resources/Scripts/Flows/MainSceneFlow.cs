@@ -13,6 +13,7 @@ public class MainSceneFlow : Flow {
      */
 
     public override void InitializeFlow() {
+        Debug.Log("InitializeFlow MainSceneFlow");
         // GENERIC INIT
         TimerManager.InGame = true;
         GameMananger.Instance.Init();

@@ -48,6 +48,8 @@ public class UIManager {
 
     public void Init() {
 
+        Debug.Log("UIManager Init");
+
         //_______________player_1
         player1 = GameObject.Find("CarOriginal0").GetComponent<CarController>();
         speedOMeterP1 = GameObject.Find("SpeedometerP1").GetComponent<RectTransform>();

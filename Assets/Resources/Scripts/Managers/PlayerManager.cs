@@ -22,6 +22,7 @@ public class PlayerManager {
     private Dictionary<int, CarUserControl> players = new Dictionary<int, CarUserControl>();
 
     public void Init () {
+        Debug.Log("PlayerManager Init");
         GameObject[] cars = GameObject.FindGameObjectsWithTag(GV.CAR_TAG);
 
         for (int i = 0; i < cars.Length; i++) {
@@ -36,8 +37,10 @@ public class PlayerManager {
     }
 
     public void Update (float _dt) {
-        foreach (KeyValuePair<int, CarUserControl> kv in players)
+        foreach (KeyValuePair<int, CarUserControl> kv in players) {
             CheckPlayerStuck(kv.Value);
+            kv.Value.UpdateCar(InputManager.Instance.GetInputInformation(kv.Key));
+        }
     }
 
     public void FixedUpdate (float _fdt) {
