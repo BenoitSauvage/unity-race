@@ -34,20 +34,12 @@ public class PowerUp : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
 
-        Debug.Log("On trigger enter : " + other.transform.tag);
+        Rigidbody rb = other.attachedRigidbody; 
+        if (rb.tag == GV.CAR_TAG) {
+            CarUserControl car =  rb.gameObject.GetComponent<CarUserControl>();
 
-        if (other.transform.tag == GV.CAR_TAG) {
-            Car car = other.GetComponent<Car>();
 
-            Debug.Log("Touch by car");
-
-            if (other.name == "CarOriginal0") {
-                PlayerManager.Instance.AugmentNitroReserv(0);
-            }
-            else {
-                PlayerManager.Instance.AugmentNitroReserv(1);
-            }
-
+            car.FillNitroTank();
             //TODO Update Nitro
 
             gameObject.SetActive(false);

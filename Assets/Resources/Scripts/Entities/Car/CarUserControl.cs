@@ -29,6 +29,9 @@ public class CarUserControl : MonoBehaviour
         m_Car.Nitro(output.nitro);
     }
 
+    public void FillNitroTank() {
+        m_Car.FillNitroTank();
+    }
 
     //function test used by the monoBehavior class 
     private void FixedUpdate()

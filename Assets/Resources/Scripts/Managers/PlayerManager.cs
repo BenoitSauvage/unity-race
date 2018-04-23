@@ -53,7 +53,7 @@ public class PlayerManager {
     }
 
     public void AugmentNitroReserv(int _id) {
-        players[_id].nitro = GV.MAX_AMOUNT_NITRO;
+        players[_id].FillNitroTank();
 
     }
 

@@ -209,6 +209,9 @@ public class CarController : MonoBehaviour
         }
     }
 
+    public void FillNitroTank() {
+        NitroAmount = GV.MAX_AMOUNT_NITRO;
+    }
 
     private void ApplyDrive(float accel, float footbrake)
     {
@@ -256,9 +259,10 @@ public class CarController : MonoBehaviour
     //car nitro system
     public void Nitro(bool isActivatedNitro)
     {
-        Debug.Log("nitro activated");
         if (isActivatedNitro && CurrentSpeed > 5 && NitroAmount > 0)
         {
+            Debug.Log("nitro activated");
+
             m_CurrentTorque = m_FullTorqueOverAllWheels * GV.NITRO_FORCE;
             leftNitroFlame.emit = true;
             rightNitroFlame.emit = true;
@@ -271,11 +275,7 @@ public class CarController : MonoBehaviour
             rightNitroFlame.emit = false;
         }
 
-        if (NitroAmount < GV.MAX_AMOUNT_NITRO && !isActivatedNitro && CurrentSpeed > 20)
-        {
-            NitroAmount++;
-        }
-        else if (NitroAmount > GV.MAX_AMOUNT_NITRO)
+        if (NitroAmount > GV.MAX_AMOUNT_NITRO)
         {
             NitroAmount = GV.MAX_AMOUNT_NITRO;
         }
